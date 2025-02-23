@@ -64,38 +64,47 @@ const images = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+// посил на список галер
 const gallery = document.querySelector('.gallery');
-const modal = document.getElementById('modal');
-const modalImg = document.getElementById('modal-img');
 
-// розмітка
+// розмітка для гал
 const galleryMarkup = images
   .map(
     ({ preview, original, description }) => `
     <li class="gallery-item">
-        <a class="gallery-link" href="${original}">
-            <img class="gallery-image" src="${preview}" data-source="${original}" alt="${description}">
-        </a>
+      <a class="gallery-link" href="${original}">
+        <img
+          class="gallery-image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
     </li>
-`
+  `
   )
   .join('');
 
+// вставляєм HTML
 gallery.innerHTML = galleryMarkup;
 
-// вікно відчиняється
+// делегування
 gallery.addEventListener('click', (event) => {
-  event.preventDefault(); // Предотвращаем скачивание изображения
-  const img = event.target.closest('.gallery-image');
-  if (!img) return;
-  modalImg.src = img.dataset.source;
-  modalImg.alt = img.alt;
-  modal.classList.add('show');
-});
+  event.preventDefault(); // поведінка ссилки
 
-// вікно зачиняється
-modal.addEventListener('click', () => {
-  modal.classList.remove('show');
-  modalImg.src = '';
-  modalImg.alt = '';
+  const target = event.target;
+
+  // клік по зобр
+  if (!target.classList.contains('gallery-image')) {
+    return;
+  }
+
+  const largeImageUrl = target.dataset.source;
+
+  //  `basicLightbox`
+  const instance = basicLightbox.create(`
+    <img src="${largeImageUrl}" width="800" height="600">
+  `);
+
+  instance.show();
 });

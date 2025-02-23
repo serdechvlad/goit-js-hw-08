@@ -50,7 +50,7 @@ body {
 .modal img {
   max-width: 90%;
   max-height: 90%;
-  border-radius: 5px;
+  border-radius: 0px;
 }
 
 .modal.show {
